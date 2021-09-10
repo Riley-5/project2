@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% for object in watchlist.listing.all %}
+        <div class="container_active">
+            <div class="image_container">
+                <div class="image">
+                    <img src="{{ object.image_url }}"/>
+                </div>
+            </div>
+            <div class="content_container">
+                <div class="title">
+                    <a href="{% url 'listing' object.id %}">{{ object.title }}</a>
+                </div>
+                <br/>
+                <div class="description">
+                    <strong>Item Description:</strong> 
+                    <br/>
+                    {{ object.description }}
+                </div>
+                <br/>
+                <div class="starting_price">
+                    <strong>Starting Price:</strong> ${{ object.starting_price }}
+                </div>
+                <br/>
+                <div class="owner">
+                    <strong>Owner:</strong> {{ object.owner }}
+                </div>
+                <br/>
+                <div class="add_watchlist"></div>
+            </div>
+        </div>
+        <br/>
+        {% empty %}
+        No Item/s in Category
+        <hr/>
+    {% endfor %}
+    <div class="back_link_active">
+        <a href="{% url 'index' %}">Back to Active Listings</a>
+    </div>
+{% endblock %}

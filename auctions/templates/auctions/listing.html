@@ -1,0 +1,115 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Item</h2>
+
+    <div class="container">
+        <div class="image_container">
+            <img src="{{ item.image_url }}"/>
+        </div>
+        <div class="content_container">
+            <div class="title">
+                {{ item.title }}
+            </div>
+            <br/>
+            <div class="description">
+                <strong>Item Description:</strong>
+                <br/>
+                {{ item.description }}
+            </div>
+            <br/>
+            <div class="starting_price">
+                <strong>Starting Price:</strong> ${{ item.starting_price }}
+            </div>
+            <br/>
+            <div class="owner">
+                <strong>Owner:</strong> {{ item.owner }}
+            </div>
+            <br/>
+            <div class="add_watchlist">
+                {% if item.on_watchlist is False %}
+                    <a href="{% url 'add_watchlist' item.id %}">Add Item To Watchlist</a>
+                {% else %}
+                    Item On Watchlist
+                {% endif %}
+            </div>
+        </div>
+        <div class="bid_container">
+            <div class="bid_title">
+                <h3>Bids</h3>
+            </div>
+            <div class="add_bid">
+                {% if user.is_authenticated %}
+                <form action="{% url 'listing' item.id %}" method="POST">
+                    {% csrf_token %}
+                    {{ bid_form }}
+                    <input type="submit" value="Bid"/>
+                </form>
+                {% else %}
+                    Login to Bid
+                {% endif %}
+            </div>
+            <br/>
+            <div class="bids">
+                <ul>
+                    {% for number in top_3 %}
+                        <li>{{ number }}</li>
+                        {% empty %}
+                        No Bids
+                    {% endfor %}
+                </ul>
+                {{ error_message }}
+            </div>
+            <div class="close_auction">
+                {% if user.is_authenticated and user == item.owner and item.active == True %}
+                    <form action="{% url 'listing' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Close Auction"/>
+                    </form>
+                {% endif %}
+            </div>
+            <hr/>
+            <div class="winner">
+                {% if item.active == False %}
+                    {% for winner in winners %}
+                        Winner: {{ winner }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="comment_container">
+            <div class="comment_title">
+                <h3>Comments</h3>
+            </div>
+            <br/>
+            <div class="add_comment">
+                {% if user.is_authenticated %}
+                <form action="{% url 'listing' item.id %}" method="POST">
+                    {% csrf_token %}
+                    {{ comment_form }}
+                    <input type="submit" value="Add"/>
+                </form>
+                {% else %}
+                    Login to Comment
+                {% endif %}
+            </div>
+            <br/>
+            <div class="comments">
+                <ul>
+                    {% for comment in item.comments.all %}
+                        <li>
+                            {{ comment.owner }}: {{ comment.body }}
+                        </li>
+                        {% empty %}
+                            No Comments
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="back_link">
+        <a href="{% url 'index' %}">Back to Active Listings</a>
+    </div>
+    <hr/>
+{% endblock %}

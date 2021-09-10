@@ -1,0 +1,113 @@
+body {
+    padding: 10px;
+}
+
+.container {
+    height: 450pt;
+    width: 800pt;
+}
+
+.container_active {
+    height: 225pt;
+    width: 530pt
+}
+
+.image_container {
+    border: solid 1pt black;
+    height: 225pt;
+    width: 230pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left;
+}
+
+.content_container {
+    border-top: solid 1pt black;
+    border-right: solid 1pt black;
+    border-bottom: solid 1pt black;
+    height: 225pt;
+    width: 300pt;
+    float: left;
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30pt;
+    text-decoration: underline;
+}
+
+.description {
+    margin-left: 10pt;
+}
+
+.starting_price {
+    margin-left: 10pt;
+}
+
+.owner {
+    margin-left: 10pt;
+}
+
+.add_watchlist {
+    margin-left: 10pt;
+}
+
+.bid_container {
+    border-top: solid 1pt black;
+    border-right: solid 1pt black;
+    border-bottom: solid 1pt black;
+    height: 225pt;
+    width: 230pt;
+    float: left;
+}
+
+.bid_title {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.add_bid {
+    display: flex;
+    justify-content: center;
+}
+
+.close_auction {
+    display: flex;
+    justify-content: center;
+}
+
+.winner {
+    display: flex;
+    justify-content: center;
+}
+
+.comment_container {
+    border-left: solid 1pt black;
+    border-right: solid 1pt black;
+    border-bottom: solid 1pt black;
+    height: 225pt;
+    width: 760pt;
+    float: left;
+    clear: left;
+}
+
+.comment_title {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.add_comment {
+    display: flex;
+    justify-content: center;
+}
+
+.comments {
+    display: flex;
+    justify-content: center;
+}
+
+.back_link {
+    text-align: center;
+}
