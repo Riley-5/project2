@@ -180,8 +180,6 @@ def category_items(request, category):
 
 def add_watchlist(request, listing_id):
     item_for_watchlist = Listing.objects.get(pk = listing_id)
-    if Watchlist.objects.filter(user = request.user, listing = listing_id).exists():
-        return HttpResponseRedirect(reverse('index'))
     user_watchlist, created = Watchlist.objects.get_or_create(user = request.user)
     user_watchlist.listing.add(item_for_watchlist)
     item_for_watchlist.on_watchlist = True
