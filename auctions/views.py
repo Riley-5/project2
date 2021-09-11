@@ -99,24 +99,6 @@ def listing(request, listing_id):
     if top_bid == None:
         top_bid = 0
 
-    #comments
-    if request.method == "POST":
-        comment_form = CommentForm(request.POST)
-
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit = False)
-            new_comment.owner = request.user
-            new_comment.listing_id = listing_id
-            new_comment.save()
-            return render(request, "auctions/listing.html", {
-                "item": item,
-                "commment_form": CommentForm(),
-                "bid_form": BidForm(),
-                "top_3": top_3
-            })
-    else:
-        comment_form = CommentForm()
-
     #bids
     if request.method == "POST":
         bid_form = BidForm(request.POST)
@@ -138,16 +120,27 @@ def listing(request, listing_id):
             else:
                 error_message = "ERROR: Bid has be to be greater than or equal to the starting price and greater than any other bids."
                 return render(request, "auctions/listing.html", {
-                        "item": item,
-                        "comment_form": CommentForm(),
-                        "bid_form": BidForm(),
-                        "top_3": top_3,
-                        "error_message": error_message
+                    "item": item,
+                    "comment_form": CommentForm(),
+                    "bid_form": BidForm(),
+                    "top_3": top_3,
+                    "error_message": error_message
                 })
     else:
         bid_form = BidForm()
+        
+    return render(request, "auctions/listing.html", {
+        "item": item,
+        "comment_form": CommentForm(),
+        "bid_form": BidForm(),
+        "top_3": top_3,
+        "winners": winner 
+    })
 
-    #close auction
+def close_auction(request, listing_id):
+    item = Listing.objects.get(pk = listing_id)
+    winner = Bid.objects.filter(listing__pk = listing_id).order_by('-bid')[:1]
+    top_3 = Bid.objects.filter(listing__pk = listing_id).order_by('-bid')[:3]
     if request.method == "POST":
         item.active = False
         item.save()
@@ -158,13 +151,42 @@ def listing(request, listing_id):
         "bid_form": BidForm(),
         "winners": winner
         })
-        
+
     return render(request, "auctions/listing.html", {
         "item": item,
         "comment_form": CommentForm(),
         "bid_form": BidForm(),
         "top_3": top_3,
         "winners": winner 
+    })
+
+def comments(request, listing_id):
+    item = Listing.objects.get(pk = listing_id)
+    top_3 = Bid.objects.filter(listing__pk = listing_id).order_by('-bid')[:3]
+    winner = Bid.objects.filter(listing__pk = listing_id).order_by('-bid')[:1]
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit = False)
+            new_comment.owner = request.user
+            new_comment.listing_id = listing_id
+            new_comment.save()
+            return render(request, "auctions/listing.html", {
+                "item": item,
+                "commment_form": CommentForm(),
+                "bid_form": BidForm(),
+                "top_3": top_3
+            })
+    else:
+        comment_form = CommentForm()
+
+    return render(request, "auctions/listing.html", {
+        "item": item,
+        "comment_form": CommentForm(),
+        "bid_form": BidForm(),
+        "top_3": top_3,
+        "winners": winner
     })
 
 def categories(request):

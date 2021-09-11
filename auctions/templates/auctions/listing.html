@@ -62,7 +62,7 @@
             </div>
             <div class="close_auction">
                 {% if user.is_authenticated and user == item.owner and item.active == True %}
-                    <form action="{% url 'listing' item.id %}" method="POST">
+                    <form action="{% url 'close_auction' item.id %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" value="Close Auction"/>
                     </form>
@@ -84,7 +84,7 @@
             <br/>
             <div class="add_comment">
                 {% if user.is_authenticated %}
-                <form action="{% url 'listing' item.id %}" method="POST">
+                <form action="{% url 'comments' item.id %}" method="POST">
                     {% csrf_token %}
                     {{ comment_form }}
                     <input type="submit" value="Add"/>
