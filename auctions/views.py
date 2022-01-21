@@ -105,18 +105,17 @@ def listing(request, listing_id):
 
         if bid_form.is_valid():
             bid = bid_form.cleaned_data["bid"]
-            if bid >= item.starting_price:
-                if bid > top_bid:
-                    new_bid = bid_form.save(commit = False)
-                    new_bid.owner = request.user
-                    new_bid.listing_id = listing_id
-                    new_bid.save()
-                    return render(request, "auctions/listing.html", {
-                        "item": item,
-                        "comment_form": CommentForm(),
-                        "bid_form": BidForm(),
-                        "top_3": top_3
-                    })
+            if bid >= item.starting_price and bid > top_bid:
+                new_bid = bid_form.save(commit = False)
+                new_bid.owner = request.user
+                new_bid.listing_id = listing_id
+                new_bid.save()
+                return render(request, "auctions/listing.html", {
+                    "item": item,
+                    "comment_form": CommentForm(),
+                    "bid_form": BidForm(),
+                    "top_3": top_3
+                })
             else:
                 error_message = "ERROR: Bid has be to be greater than or equal to the starting price and greater than any other bids."
                 return render(request, "auctions/listing.html", {
